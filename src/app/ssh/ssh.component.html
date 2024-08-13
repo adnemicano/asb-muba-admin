@@ -78,40 +78,42 @@
   </div>
 
   <table class="ssh-table">
-  <thead>
-    <tr>
-      <th class="checkbox-column"><input type="checkbox" /></th>
-      <th class="action-column">Aksi</th>
-      <th>Kode Komponen</th>
-      <th>Uraian Komponen</th>
-      <th>Spesifikasi</th>
-      <th>Satuan</th>
-      <th>Harga Satuan</th>
-      <th>TKDN</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="checkbox-column"><input type="checkbox" /></td>
-      <td class="action-column dropdown-wrapper">
-        <img src="assets/img/icon-actions.png" (click)="toggleTdDropdown()" />
-        <div class="dropdown-menu" [ngClass]="{ show: isTdDropdownVisible }">
-          <ul class="dropdown-list">
-            <li><a type="button" (click)="kliktampil()">Tampil Rekening</a></li>
-            <li><a>Edit Standar Harga</a></li>
-            <li><a>Kunci Standar Harga</a></li>
-            <li><a>Hapus Standar Harga</a></li>
-          </ul>
-        </div>
-      </td>
-      <td>1.1.12.01.01.0001.00001</td>
-      <td>Kuas</td>
-      <td>Kuas Lukis, Gagang Kayu</td>
-      <td>Buah</td>
-      <td>Rp 40.500,00</td>
-      <td>100%</td>
-    </tr>
-    <tr>
+    <thead>
+      <tr>
+        <th class="checkbox-column"><input type="checkbox" /></th>
+        <th class="action-column">Aksi</th>
+        <th>Kode Komponen</th>
+        <th>Uraian Komponen</th>
+        <th>Spesifikasi</th>
+        <th>Satuan</th>
+        <th>Harga Satuan</th>
+        <th>TKDN</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="checkbox-column"><input type="checkbox" /></td>
+        <td class="action-column dropdown-wrapper">
+          <img src="assets/img/icon-actions.png" (click)="toggleTdDropdown()" />
+          <div class="dropdown-menu" [ngClass]="{ show: isTdDropdownVisible }">
+            <ul class="dropdown-list">
+              <li>
+                <a type="button" (click)="kliktampil()">Tampil Rekening</a>
+              </li>
+              <li><a>Edit Standar Harga</a></li>
+              <li><a>Kunci Standar Harga</a></li>
+              <li><a>Hapus Standar Harga</a></li>
+            </ul>
+          </div>
+        </td>
+        <td>1.1.12.01.01.0001.00001</td>
+        <td>Kuas</td>
+        <td>Kuas Lukis, Gagang Kayu</td>
+        <td>Buah</td>
+        <td>Rp 40.500,00</td>
+        <td>100%</td>
+      </tr>
+      <tr>
         <td class="checkbox-column"><input type="checkbox" /></td>
         <td class="action-column">
           <img src="assets/img/icon-actions.png" alt="" />
@@ -122,7 +124,6 @@
         <td>Buah</td>
         <td>Rp 28.750,00</td>
         <td>100%</td>
-        
       </tr>
       <tr>
         <td class="checkbox-column"><input type="checkbox" /></td>
@@ -148,9 +149,8 @@
         <td>Rp 11.500,00</td>
         <td>100%</td>
       </tr>
-  </tbody>
-</table>
-
+    </tbody>
+  </table>
 </div>
 
 <ng-template #modalform>
@@ -162,6 +162,7 @@
           <label for="kategori">Kategori *</label>
           <input type="text" id="kategori" Name="kategori" required />
         </div>
+
         <div class="form-group">
           <label for="namaKomponen">Nama Komponen *</label>
           <input
@@ -171,6 +172,7 @@
             required
           />
         </div>
+
         <div class="form-group">
           <label for="spesifikasi">Spesifikasi *</label>
           <input
@@ -180,10 +182,12 @@
             required
           />
         </div>
+
         <div class="form-group">
           <label for="satuan">Satuan *</label>
           <input type="text" id="satuan" formControlName="satuan" required />
         </div>
+
         <div class="form-group">
           <label>Jenis Produk *</label>
           <div>
@@ -203,6 +207,7 @@
             <label for="produkLuarNegeri">Produk Luar Negeri</label>
           </div>
         </div>
+
         <div
           *ngIf="componentForm.get('jenisProduk').value === 'Dalam Negeri'"
           class="form-group"
@@ -211,16 +216,59 @@
           <input type="text" id="tkdn" formControlName="tkdn" required />
           <small>Max presentase hanya sampai 100%</small>
         </div>
+
         <div class="form-group">
           <label for="namaAkun">Nama Akun *</label>
           <input type="text" id="namaAkun" formControlName="namaAkun" />
         </div>
+
         <div class="form-group">
           <label>Harga Satuan *</label>
+          <div>
+            <input
+              type="radio"
+              id="perLokasi"
+              formControlName="tipeHargaSatuan"
+              value="Per Lokasi"
+            />
+            <label for="perLokasi">Per Lokasi</label>
+            <input
+              type="radio"
+              id="umum"
+              formControlName="tipeHargaSatuan"
+              value="Umum"
+            />
+            <label for="umum">Umum</label>
+          </div>
+        </div>
+
+        <div
+          *ngIf="componentForm.get('tipeHargaSatuan').value === 'Per Lokasi'"
+          class="form-group"
+        >
+          <label>Harga Satuan Per Lokasi *</label>
           <div class="sub-group" *ngFor="let kecamatan of kecamatans">
             <label>{{ kecamatan }}</label>
-            <input type="text" name="hargaSatuan" required />
+            <input
+              type="text"
+              [formControlName]="kecamatan"
+              name="hargaSatuan"
+              required
+            />
           </div>
+        </div>
+
+        <div
+          *ngIf="componentForm.get('tipeHargaSatuan').value === 'Umum'"
+          class="form-group"
+        >
+          <label for="hargaSatuanUmum">Harga Satuan *</label>
+          <input
+            type="text"
+            id="hargaSatuanUmum"
+            formControlName="hargaSatuanUmum"
+            required
+          />
         </div>
       </form>
     </div>
@@ -296,8 +344,19 @@
           <p><strong>Satuan:</strong> Buah</p>
         </div>
         <div class="search-bar">
-          <input type="text" placeholder="Cari data" [(ngModel)]="searchQuery" (input)="filterRekening()">
-          <button class="add-button" (click)="addRekening()">Tambah Rekening</button>
+          <input
+            type="text"
+            placeholder="Cari data"
+            [(ngModel)]="searchQuery"
+            (input)="filterRekening()"
+          />
+          <button
+            class="add-button"
+            (click)="addRekening()"
+            style="background-color: #16a085; color: #fff"
+          >
+            Tambah Rekening
+          </button>
         </div>
         <div class="rekening-list">
           <table>
@@ -309,9 +368,11 @@
             </thead>
             <tbody>
               <tr *ngFor="let rekening of filteredRekening">
-                <td class="rekening-column">{{ rekening.code }} {{ rekening.description }}</td>
+                <td class="rekening-column">
+                  {{ rekening.code }} {{ rekening.description }}
+                </td>
                 <td class="aksi-column">
-                  <img src="assets/img/icon-delete.png" alt="">
+                  <img src="assets/img/icon-delete.png" alt="" />
                 </td>
               </tr>
             </tbody>
@@ -351,7 +412,9 @@
           </thead>
           <tbody>
             <tr class="txt-code">
-              <td colspan="7" style="text-align: center;">1.1.12.01.01.0001 Bahan Bangunan dan Konstruksi</td>
+              <td colspan="7" style="text-align: center">
+                1.1.12.01.01.0001 Bahan Bangunan dan Konstruksi
+              </td>
             </tr>
             <tr *ngFor="let item of exports">
               <td>{{ item.id }}</td>

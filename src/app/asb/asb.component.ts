@@ -1,13 +1,7 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ModalService } from "app/modal-form/modal-form.service";
-
 
 @Component({
   selector: "app-asb",
@@ -18,8 +12,13 @@ export class AsbComponent implements OnInit {
   @ViewChild("modalform") modalform!: TemplateRef<any>;
   @ViewChild("modalarsip") modalarsip!: TemplateRef<any>;
   @ViewChild("modaltampil") modaltampil!: TemplateRef<any>;
+  @ViewChild("modaldetail") modaldetail!: TemplateRef<any>;
+  @ViewChild("modaldtlasb") modaldtlasb!: TemplateRef<any>;
+  @ViewChild("modaleditasb") modaleditasb!: TemplateRef<any>;
+
   isDropdownOpen = false;
   isArsipPopupOpen = false;
+  showTable = false;
 
   componentForm: FormGroup;
   kecamatans = [
@@ -124,6 +123,86 @@ export class AsbComponent implements OnInit {
     },
   ];
 
+  details = [
+    {
+      no: "",
+      uraian: "Pekerja",
+      kode: "L.01",
+      satuan: "OH",
+      koef1vol: "",
+      koef1sat: "",
+      koef2vol: "",
+      koef2sat: "",
+      koef3vol: "",
+      koef3sat: "",
+      hargasatuan: "94.206",
+      jmlharga: "155.440",
+    },
+    {
+      no: "",
+      uraian: "Tukang Batu",
+      kode: "L.02",
+      satuan: "OH",
+      koef1vol: "",
+      koef1sat: "",
+      koef2vol: "",
+      koef2sat: "",
+      koef3vol: "",
+      koef3sat: "",
+      hargasatuan: "111.055",
+      jmlharga: "30.540",
+    },
+    {
+      no: "",
+      uraian: "Kepala Tukang",
+      kode: "L.03",
+      satuan: "OH",
+      koef1vol: "",
+      koef1sat: "",
+      koef2vol: "",
+      koef2sat: "",
+      koef3vol: "",
+      koef3sat: "",
+      hargasatuan: "128.000",
+      jmlharga: "3.584",
+    },
+  ];
+
+  tblDataAdd = [
+    {
+      kodeKomponen: "",
+      rincianKomponen: "",
+      sifat: "",
+      satuanHSPK: "",
+      koefisien1Vol: "",
+      koefisien1Satuan: "",
+      koefisien2Vol: "",
+      koefisien2Satuan: "",
+      koefisien3Vol: "",
+      koefisien3Satuan: "",
+      hargaSatuan: "",
+    },
+    // Add more rows as needed
+  ];
+
+  tableData = [
+    {
+      kodeKomponen: "1.1.12.01.01.0001.00001",
+      rincianKomponen: "Pekerjaan Pembersihan Lokasi",
+      sifat: "",
+      satuanHSPK: "Buah",
+      koefisien1Vol: "",
+      koefisien1Satuan: "",
+      koefisien2Vol: "",
+      koefisien2Satuan: "",
+      koefisien3Vol: "",
+      koefisien3Satuan: "",
+      hargaSatuan: "Rp 40.500,00",
+      editing: false,
+    },
+    // Add more rows as needed
+  ];
+
   constructor(private modal: ModalService, private fb: FormBuilder) {
     this.componentForm = this.fb.group({
       kategori: ["", Validators.required],
@@ -132,17 +211,28 @@ export class AsbComponent implements OnInit {
       satuan: ["", Validators.required],
       jenisProduk: ["", Validators.required],
       namaAkun: [""],
-      hargaSatuan: this.fb.group(
-        this.kecamatans.reduce((group: any, kecamatan: string) => {
-          group[kecamatan] = ["", Validators.required];
-          return group;
-        }, {})
-      ),
+      hargaSatuanType: ["", Validators.required],
+      kecamatan: [""],
+      hargaSatuan: ["", Validators.required],
       tkdn: [""],
     });
   }
+
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    // Initialize your component here
+  }
+
+  editRow(index: number) {
+    this.tableData[index].editing = !this.tableData[index].editing;
+  }
+
+  onHargaSatuanTypeChange(): void {
+    this.componentForm.get("kecamatan")?.reset();
+    this.componentForm.get("hargaSatuan")?.reset();
+  }
+
+  onKecamatanChange(): void {
+    this.componentForm.get("hargaSatuan")?.reset();
   }
 
   openArsipPopup(): void {
@@ -197,6 +287,47 @@ export class AsbComponent implements OnInit {
     const options: any = {
       dialogContent: this.modaltampil,
       width: "50vw",
+      height: "30vw",
+      minWidth: "30px",
+      disableClose: true,
+    };
+
+    this.modal.open(options);
+  }
+
+  klikdetail() {
+    const options: any = {
+      dialogContent: this.modaldetail,
+      width: "80vw",
+      height: "30vw",
+      minWidth: "30px",
+      disableClose: true,
+    };
+
+    this.modal.open(options);
+  }
+
+  klikdtlasb() {
+    const options: any = {
+      dialogContent: this.modaldtlasb,
+      width: "80vw",
+      height: "30vw",
+      minWidth: "30px",
+      disableClose: true,
+    };
+
+    this.modal.open(options);
+  }
+
+  saveRow(row: any) {
+    console.log("Saving row data:", row);
+    row.editing = false;
+  }
+
+  klikeditasb() {
+    const options: any = {
+      dialogContent: this.modaleditasb,
+      width: "80vw",
       height: "30vw",
       minWidth: "30px",
       disableClose: true,

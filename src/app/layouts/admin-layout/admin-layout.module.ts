@@ -29,6 +29,8 @@ import { BerandaComponent } from "app/beranda/beranda.component";
 import { BeritaComponent } from "app/berita/berita.component";
 import { PeraturanComponent } from "app/peraturan/peraturan.component";
 import { InformasiComponent } from "app/informasi/informasi.component";
+import { MatTableModule } from "@angular/material/table";
+import { MatIconModule } from "@angular/material/icon";
 
 
 
@@ -47,6 +49,10 @@ import { InformasiComponent } from "app/informasi/informasi.component";
     MatTooltipModule,
     MatDialogModule,
     MatRadioModule,
+    MatTableModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatIconModule,
   ],
   declarations: [
     DashboardComponent,
@@ -60,8 +66,6 @@ import { InformasiComponent } from "app/informasi/informasi.component";
     SbuComponent,
     ModalFormComponent,
   ],
-  providers:[
-    ModalService
-  ]
+  providers: [ModalService],
 })
 export class AdminLayoutModule {}

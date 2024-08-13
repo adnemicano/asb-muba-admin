@@ -271,7 +271,11 @@
             [(ngModel)]="searchQuery"
             (input)="filterRekening()"
           />
-          <button class="add-button" (click)="addRekening()">
+          <button
+            class="add-button"
+            (click)="addRekening()"
+            style="background-color: #16a085; color: #fff"
+          >
             Tambah Rekening
           </button>
         </div>
@@ -289,12 +293,7 @@
                   {{ rekening.code }} {{ rekening.description }}
                 </td>
                 <td class="aksi-column">
-                  <button
-                    class="delete-button"
-                    (click)="deleteRekening(rekening)"
-                  >
-                    &#x1F5D1;
-                  </button>
+                  <img src="assets/img/icon-delete.png" alt="" />
                 </td>
               </tr>
             </tbody>

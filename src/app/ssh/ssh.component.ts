@@ -168,20 +168,48 @@ export class SshComponent {
 
   constructor(private modal: ModalService, private fb: FormBuilder) {
     this.componentForm = this.fb.group({
-      kategori: ["", Validators.required],
       namaKomponen: ["", Validators.required],
       spesifikasi: ["", Validators.required],
       satuan: ["", Validators.required],
       jenisProduk: ["", Validators.required],
-      namaAkun: [""],
-      hargaSatuan: this.fb.group(
-        this.kecamatans.reduce((group: any, kecamatan: string) => {
-          group[kecamatan] = ["", Validators.required];
-          return group;
-        }, {})
-      ),
       tkdn: [""],
+      tipeHargaSatuan: ["", Validators.required],
+      hargaSatuanUmum: [""],
+      namaAkun: ["", Validators.required],
     });
+
+    this.componentForm.get("jenisProduk").valueChanges.subscribe((value) => {
+      const tkdnControl = this.componentForm.get("tkdn");
+      if (value === "Dalam Negeri") {
+        tkdnControl.setValidators([Validators.required]);
+      } else {
+        tkdnControl.clearValidators();
+      }
+      tkdnControl.updateValueAndValidity();
+    });
+
+    this.componentForm
+      .get("tipeHargaSatuan")
+      .valueChanges.subscribe((value) => {
+        if (value === "Per Lokasi") {
+          this.kecamatans.forEach((kecamatan) => {
+            this.componentForm.addControl(
+              kecamatan,
+              new FormControl("", Validators.required)
+            );
+          });
+          this.componentForm.get("hargaSatuanUmum").clearValidators();
+          this.componentForm.get("hargaSatuanUmum").updateValueAndValidity();
+        } else {
+          this.kecamatans.forEach((kecamatan) => {
+            this.componentForm.removeControl(kecamatan);
+          });
+          this.componentForm
+            .get("hargaSatuanUmum")
+            .setValidators([Validators.required]);
+          this.componentForm.get("hargaSatuanUmum").updateValueAndValidity();
+        }
+      });
   }
 
   openArsipPopup(): void {
